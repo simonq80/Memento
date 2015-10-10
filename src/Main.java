@@ -1,16 +1,21 @@
 import java.util.Scanner;
 
 public class Main {
-
-	public static void update(Originator org, Memento[] stack, int size, String data, int xloc, int yloc){
-		for(int i=size-2; i>=0; i--){
-			stack[i+1] = stack[i];
+	//updates originator with new values while storing memento in the stack.
+	public static void update(Originator org, Memento[] stack, String data, int xloc, int yloc){
+		for(int i=stack.length-2; i>=0; i--){
+			stack[i+1] = stack[i];	//move values down stack
 		}
-		stack[0] = org.create_mem();
+		stack[0] = org.create_mem();//put new memento in stack
 		org.update(data, xloc, yloc);
 	}
+	
+	//restores orginator from a selected memento in stack
 	public static void undo(Originator org, Memento[] stack, int stepsback){
-		org.restore_memento(stack[stepsback-1]);
+		org.restore_memento(stack[stepsback-1]);//restore originator to memento from stack
+		for(int i=0; i<stack.length-stepsback; i++ ){
+			stack[i] = stack[i+stepsback]; //update stack
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -34,7 +39,7 @@ public class Main {
 			else{
 				int xloc = input.nextInt();
 				int yloc = input.nextInt();
-				update(org, memstack, 5, s, xloc, yloc);
+				update(org, memstack, s, xloc, yloc);
 			}
 			org.print_data();
 		}

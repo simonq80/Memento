@@ -1,26 +1,57 @@
 import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
 
 public class Main {
-	//updates originator with new values while storing memento in the stack.
-	public static void update(Originator org, Memento[] stack, String data, int xloc, int yloc){
-		for(int i=stack.length-2; i>=0; i--){
-			stack[i+1] = stack[i];	//move values down stack
-		}
-		stack[0] = org.create_mem();//put new memento in stack
-		org.update(data, xloc, yloc);
+	
+	public static void initializeJFrame(Originator org, JFrame mainframe, UndoStack stack){
+		String values = "null";
+		
+		mainframe.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
+		
+		JLabel dataLabel = new JLabel(values);
+		dataLabel.setPreferredSize(new Dimension(200, 20));
+		mainframe.getContentPane().add(dataLabel);
+		JTextField field1 = new JTextField("Input Data");
+		field1.setPreferredSize(new Dimension(200, 20));
+		field1.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseClicked(MouseEvent e){
+				field1.setText("");
+			}
+		});
+		mainframe.getContentPane().add(field1);
+		JButton okButton = new JButton("Enter Value");
+		okButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Scanner s = new Scanner(field1.getText());
+				stack.update(org, s.next(), s.nextInt(), s.nextInt());
+				dataLabel.setText(stack.currentValue().data + ", " + stack.currentValue().xloc + ", " + stack.currentValue().yloc);
+			}
+		});
+		mainframe.getContentPane().add(okButton);
+		
+		JButton undoButton = new JButton("Undo");
+		undoButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				stack.undo(org, 1);
+				dataLabel.setText(stack.currentValue().data + ", " + stack.currentValue().xloc + ", " + stack.currentValue().yloc);
+			}
+		});
+		mainframe.getContentPane().add(undoButton);
+		
+		mainframe.pack();
+		mainframe.setVisible(true);
 	}
 	
-	//restores orginator from a selected memento in stack
-	public static void undo(Originator org, Memento[] stack, int stepsback){
-		org.restore_memento(stack[stepsback-1]);//restore originator to memento from stack
-		for(int i=0; i<stack.length-stepsback; i++ ){
-			stack[i] = stack[i+stepsback]; //update stack
-		}
-	}
+	
+
 	
 	public static void main(String[] args) {
 		
-		Memento[] memstack = new Memento[5];
+		/*Memento[] memstack = new Memento[5];
 		Originator org = new Originator();
 		boolean loop = true;
 		
@@ -42,7 +73,12 @@ public class Main {
 				update(org, memstack, s, xloc, yloc);
 			}
 			org.print_data();
-		}
+		}*/
+		final JFrame mainframe= new JFrame("Memento");
+		Originator org = new Originator();
+		UndoStack stack = new UndoStack();
+		initializeJFrame(org, mainframe, stack);
+		
 		
 	}
 

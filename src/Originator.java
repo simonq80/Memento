@@ -19,9 +19,9 @@ public class Originator{
 			Memento toReturn = new Memento(data, xloc, yloc);
 			return toReturn;
 		}
-		
-		public void print_data(){
-			System.out.print("Current Originator Data: " + data + " " + xloc + " " + yloc + "\n");
+		//Print current data
+		public String print_data(){
+			return (data + " " + xloc + " " + yloc + "\n");
 		}
 		//restore values from a given memento
 		public void restore_memento(Memento restore){

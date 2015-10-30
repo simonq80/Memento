@@ -1,7 +1,7 @@
 public class Memento{
-	public String data;
-	public int xloc;
-	public int yloc;
+	public final String data;
+	public final int xloc;
+	public final int yloc;
 	//create a memento from given values
 	public Memento(String data, int xloc, int yloc){
 		this.data = data;

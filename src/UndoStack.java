@@ -14,7 +14,7 @@ public class UndoStack {
 			
 		}
 	
-	//restores orginator from a selected memento in stack
+	//restores orginator from a selected memento in stack and updates stack
 	public void undo(Originator org, int stepsback){
 		
 			org.restore_memento(undoStack[stepsback-1]);//restore originator to memento from stack
@@ -23,7 +23,7 @@ public class UndoStack {
 			}
 		
 	}
-	
+	//return top memento without altering stack
 	public Memento currentValue(){
 		return undoStack[0];
 	}

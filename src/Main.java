@@ -6,6 +6,7 @@ import java.awt.event.*;
 
 public class Main {
 	
+	//display class
 	public static void initializeJFrame(Originator org, JFrame mainframe, UndoStack stack){
 		String values = "null";
 		
@@ -16,7 +17,7 @@ public class Main {
 		mainframe.getContentPane().add(dataLabel);
 		JTextField field1 = new JTextField("Word Int Int (Space seperated)");
 		field1.setPreferredSize(new Dimension(200, 20));
-		field1.addMouseListener(new MouseAdapter(){
+		field1.addMouseListener(new MouseAdapter(){//clear textfield on click
 			@Override
 			public void mouseClicked(MouseEvent e){
 				field1.setText("");
@@ -27,8 +28,8 @@ public class Main {
 		okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Scanner s = new Scanner(field1.getText());
-				stack.update(org, s.next(), s.nextInt(), s.nextInt());
-				dataLabel.setText(stack.currentValue().data + ", " + stack.currentValue().xloc + ", " + stack.currentValue().yloc);
+				stack.update(org, s.next(), s.nextInt(), s.nextInt());//update originator and put memento onto stack
+				dataLabel.setText(org.print_data());
 			}
 		});
 		mainframe.getContentPane().add(okButton);
@@ -37,7 +38,7 @@ public class Main {
 		undoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				stack.undo(org, 1);
-				dataLabel.setText(stack.currentValue().data + ", " + stack.currentValue().xloc + ", " + stack.currentValue().yloc);
+				dataLabel.setText(org.print_data());
 			}
 		});
 		mainframe.getContentPane().add(undoButton);
